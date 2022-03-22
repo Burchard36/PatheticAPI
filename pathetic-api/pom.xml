@@ -52,7 +52,7 @@
                 <configuration>
                     <source>8</source>
                     <reportOutputDirectory>../</reportOutputDirectory>
-                    <destDir>javadoc</destDir>
+                    <destDir>docs</destDir>
                 </configuration>
             </plugin>
         </plugins>
