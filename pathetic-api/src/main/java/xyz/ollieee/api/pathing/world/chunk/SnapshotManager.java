@@ -9,8 +9,8 @@ public interface SnapshotManager {
     /**
      * Gets the block at a location
      * @param location the location to check
-     * @return {@link PathBlock} the block
+     * @return {@link PathBlock} the block or null if the chunk is not loaded
      */
-    @NonNull
+    // @NonNull
     PathBlock getBlock(PathLocation location);
 }

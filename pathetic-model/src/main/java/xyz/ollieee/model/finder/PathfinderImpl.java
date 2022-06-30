@@ -7,6 +7,7 @@ import xyz.ollieee.api.pathing.result.PathfinderResult;
 import xyz.ollieee.api.pathing.result.PathfinderSuccess;
 import xyz.ollieee.api.pathing.strategy.PathfinderStrategy;
 import xyz.ollieee.api.pathing.strategy.strategies.DirectPathfinderStrategy;
+import xyz.ollieee.api.wrapper.PathBlock;
 import xyz.ollieee.api.wrapper.PathVector;
 import xyz.ollieee.model.PathImpl;
 import xyz.ollieee.api.wrapper.PathLocation;
@@ -99,27 +100,33 @@ public class PathfinderImpl implements Pathfinder {
 
         return newNodes;
     }
-
+    
     private static boolean nodeIsValid(Node node, Node parentNode, PriorityQueue<Node> nodeQueue, Set<PathLocation> examinedLocations, PathfinderStrategy strategy) {
-
-        if (examinedLocations.contains(node.getLocation())) {
+        
+        PathLocation location = node.getLocation();
+        PathBlock block = location.getBlock();
+    
+        if(block == null)
+            /*
+             * This will cause the Pathfinder to fail once an unloaded chunk has been reached.
+             *
+             * TODO: 01/07/2022 Change the target to the last successful found block-location
+             */
             return false;
-        }
-
-        if (nodeQueue.contains(node)) {
+        
+        if (examinedLocations.contains(location))
             return false;
-        }
 
-        if (!isWithinWorldBounds(node.getLocation())) {
+        if (nodeQueue.contains(node))
             return false;
-        }
 
-        if (!strategy.isValid(node.getLocation().getBlock(), parentNode.getLocation().getBlock(), node.getParent() == null ? node.getLocation().getBlock() : node.getParent().getLocation().getBlock())) {
+        if (!isWithinWorldBounds(location))
             return false;
-        }
 
-        return examinedLocations.add(node.getLocation());
+        if (!strategy.isValid(block, parentNode.getLocation().getBlock(), node.getParent() == null ? block : node.getParent().getLocation().getBlock()))
+            return false;
 
+        return examinedLocations.add(location);
     }
 
     private static boolean isWithinWorldBounds(PathLocation location) {
