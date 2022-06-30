@@ -51,7 +51,7 @@ public class SnapshotManagerImpl implements SnapshotManager {
              * TODO: 01/07/2022 Needs to be tested
              */
             World world = BukkitConverter.toWorld(location.getPathWorld());
-            if(!world.isChunkForceLoaded(chunkX, chunkZ))
+            if(!world.isChunkLoaded(chunkX, chunkZ))
                 /*
                  * Returns null to indicate that the chunk is not loaded.
                  * NOTE: This is only supposed to be a temporary solution, since this breaks our null semantic.
