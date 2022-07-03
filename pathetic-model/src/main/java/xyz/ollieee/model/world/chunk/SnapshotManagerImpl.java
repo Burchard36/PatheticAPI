@@ -83,6 +83,9 @@ public class SnapshotManagerImpl implements SnapshotManager {
         
         CraftChunk craftChunk = (CraftChunk) chunk;
     
+        if(Bukkit.isPrimaryThread())
+            return craftChunk.getChunkSnapshot();
+        
         Field field = craftChunk.getClass().getField("emptyBlockIDs");
         field.setAccessible(true);
     
