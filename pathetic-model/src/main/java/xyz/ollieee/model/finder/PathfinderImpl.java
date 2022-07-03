@@ -105,14 +105,6 @@ public class PathfinderImpl implements Pathfinder {
         
         PathLocation location = node.getLocation();
         PathBlock block = location.getBlock();
-    
-        if(block == null)
-            /*
-             * This will cause the Pathfinder to fail once an unloaded chunk has been reached.
-             *
-             * TODO: 01/07/2022 Change the target to the last successful found block-location
-             */
-            return false;
         
         if (examinedLocations.contains(location))
             return false;

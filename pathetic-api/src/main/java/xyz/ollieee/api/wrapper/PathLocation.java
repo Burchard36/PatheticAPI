@@ -193,7 +193,7 @@ public class PathLocation implements Cloneable {
      * Gets the {@link PathBlock} of the current location
      * @return The {@link PathBlock} at this location
      */
-    // @NonNull
+    @NonNull
     public PathBlock getBlock() {
         return PatheticAPI.getSnapshotManager().getBlock(this);
     }
