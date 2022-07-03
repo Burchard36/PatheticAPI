@@ -1,8 +1,8 @@
 package xyz.ollieee.model.world.chunk;
 
 import lombok.NonNull;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.PalettedContainer;
+import net.minecraft.world.level.block.state.IBlockData;
+import net.minecraft.world.level.chunk.DataPaletteBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
@@ -95,8 +95,8 @@ public class SnapshotManagerImpl implements SnapshotManager {
         Field field = craftChunk.getClass().getField("emptyBlockIDs");
         field.setAccessible(true);
     
-        PalettedContainer<BlockState> palettedContainer = (PalettedContainer<BlockState>) field.get(craftChunk);
-        palettedContainer.release();
+        DataPaletteBlock<IBlockData> dataDataPaletteBlock = (DataPaletteBlock<IBlockData>) field.get(craftChunk);
+        dataDataPaletteBlock.b();
         
         return craftChunk.getChunkSnapshot();
     }
