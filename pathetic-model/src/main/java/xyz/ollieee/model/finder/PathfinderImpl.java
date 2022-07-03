@@ -22,7 +22,7 @@ public class PathfinderImpl implements Pathfinder {
     private static final Class<? extends PathfinderStrategy> DEFAULT_STRATEGY_TYPE = DirectPathfinderStrategy.class;
 
     private static final StrategyRegistry STRATEGY_REGISTRY = new StrategyRegistry();
-    private static final LinkedHashSet<PathLocation> EMPTY_LINKED_HASHSET = (LinkedHashSet<PathLocation>) Collections.unmodifiableSet(new LinkedHashSet<PathLocation>());
+    private static final Set<PathLocation> EMPTY_LINKED_HASHSET = Collections.unmodifiableSet(new LinkedHashSet<>());
 
     private static final Executor FORK_JOIN_POOL = new ForkJoinPool(Runtime.getRuntime().availableProcessors(), ForkJoinPool.defaultForkJoinWorkerThreadFactory, null, true);
 
@@ -102,7 +102,7 @@ public class PathfinderImpl implements Pathfinder {
     }
     
     private static boolean nodeIsValid(Node node, Node parentNode, PriorityQueue<Node> nodeQueue, Set<PathLocation> examinedLocations, PathfinderStrategy strategy) {
-        
+
         PathLocation location = node.getLocation();
         PathBlock block = location.getBlock();
         
