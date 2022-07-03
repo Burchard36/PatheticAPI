@@ -54,6 +54,7 @@ public class SnapshotManagerImpl implements SnapshotManager {
             
             World world = BukkitConverter.toWorld(location.getPathWorld());
     
+            // TODO: 03/07/2022 The chunk is getting loaded if its unloaded. We want to avoid that
             Chunk chunk = world.getChunkAt(chunkX, chunkZ);
             ChunkSnapshot chunkSnapshot = retrieveChunkSnapshot(chunk);
             
