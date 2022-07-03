@@ -1,10 +1,14 @@
 package xyz.ollieee.model.world.chunk;
 
 import lombok.NonNull;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.PalettedContainer;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
 
 import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_18_R2.CraftChunk;
 import xyz.ollieee.Pathetic;
 import xyz.ollieee.model.world.WorldDomain;
 import xyz.ollieee.api.pathing.world.chunk.SnapshotManager;
@@ -14,6 +18,7 @@ import xyz.ollieee.api.wrapper.PathBlock;
 import xyz.ollieee.api.wrapper.PathBlockType;
 import xyz.ollieee.api.wrapper.PathLocation;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -57,8 +62,10 @@ public class SnapshotManagerImpl implements SnapshotManager {
                  * NOTE: This is only supposed to be a temporary solution, since this breaks our null semantic.
                  */
                 return null;
+    
+            Chunk chunk = world.getChunkAt(chunkX, chunkZ);
+            ChunkSnapshot chunkSnapshot = retrieveChunkSnapshot(chunk);
             
-            ChunkSnapshot chunkSnapshot = world.getChunkAt(chunkX, chunkZ).getChunkSnapshot();
             addSnapshot(location, key, chunkSnapshot);
             
             PathBlockType pathBlockType = BukkitConverter.toPathBlockType(ChunkUtils.getMaterial(chunkSnapshot, location.getBlockX() - chunkX * 16, location.getBlockY(), location.getBlockZ() - chunkZ * 16));
@@ -79,5 +86,18 @@ public class SnapshotManagerImpl implements SnapshotManager {
         worldDomain.addSnapshot(key, snapshot);
     
         Bukkit.getScheduler().runTaskLater(Pathetic.getPluginInstance(), () -> worldDomain.removeSnapshot(key), 1200L);
+    }
+    
+    private ChunkSnapshot retrieveChunkSnapshot(Chunk chunk) throws NoSuchFieldException, IllegalAccessException {
+        
+        CraftChunk craftChunk = (CraftChunk) chunk;
+    
+        Field field = craftChunk.getClass().getField("emptyBlockIDs");
+        field.setAccessible(true);
+    
+        PalettedContainer<BlockState> palettedContainer = (PalettedContainer<BlockState>) field.get(craftChunk);
+        palettedContainer.release();
+        
+        return craftChunk.getChunkSnapshot();
     }
 }
