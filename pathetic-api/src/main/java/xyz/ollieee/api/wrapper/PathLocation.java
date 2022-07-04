@@ -252,4 +252,8 @@ public class PathLocation implements Cloneable {
         return value * value;
     }
 
+    public boolean isWithinSameBlock(PathLocation otherLocation) {
+        return this.getBlockX() == otherLocation.getBlockX() && this.getBlockY() == otherLocation.getBlockY() && this.getBlockZ() == otherLocation.getBlockZ();
+    }
+
 }

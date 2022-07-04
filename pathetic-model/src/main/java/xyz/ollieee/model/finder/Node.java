@@ -47,7 +47,7 @@ public class Node implements Comparable<Node> {
     }
 
     public boolean hasReachedEnd() {
-        return this.location.getBlockX() == target.getBlockX() && this.location.getBlockY() == target.getBlockY() && this.location.getBlockZ() == target.getBlockZ();
+        return this.location.isWithinSameBlock(this.target);
     }
 
     double getDistanceKey() {

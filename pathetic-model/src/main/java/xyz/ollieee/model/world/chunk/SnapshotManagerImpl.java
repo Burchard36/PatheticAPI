@@ -1,14 +1,20 @@
 package xyz.ollieee.model.world.chunk;
 
 import lombok.NonNull;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.PalettedContainer;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.ChunkSnapshot;
 
-import org.bukkit.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.*;
+import net.minecraft.world.level.material.MaterialColor;
+
 import org.bukkit.craftbukkit.v1_19_R1.CraftChunk;
+import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChunkSnapshot;
+import org.bukkit.World;
+
 import xyz.ollieee.Pathetic;
 import xyz.ollieee.model.world.WorldDomain;
 import xyz.ollieee.api.pathing.world.chunk.SnapshotManager;
@@ -63,11 +69,8 @@ public class SnapshotManagerImpl implements SnapshotManager {
         try {
             
             World world = BukkitConverter.toWorld(location.getPathWorld());
-    
-            // TODO: 03/07/2022 The chunk is getting loaded if its unloaded. We want to avoid that
-            Chunk chunk = world.getChunkAt(chunkX, chunkZ);
 
-            ChunkSnapshot chunkSnapshot = retrieveChunkSnapshot(chunk);
+            ChunkSnapshot chunkSnapshot = retrieveChunkSnapshot(world, chunkX, chunkZ);
 
             addSnapshot(location, key, chunkSnapshot);
             
@@ -90,23 +93,25 @@ public class SnapshotManagerImpl implements SnapshotManager {
     
         Bukkit.getScheduler().runTaskLater(Pathetic.getPluginInstance(), () -> worldDomain.removeSnapshot(key), 1200L);
     }
-    
-    private ChunkSnapshot retrieveChunkSnapshot(Chunk chunk) {
+
+    @SuppressWarnings("unchecked")
+    private ChunkSnapshot retrieveChunkSnapshot(World world, int chunkX, int chunkZ) {
 
         try {
-            CraftChunk craftChunk = (CraftChunk) chunk;
 
-            if (Bukkit.isPrimaryThread())
-                return craftChunk.getChunkSnapshot();
+            ServerLevel serverLevel = ((CraftWorld) world).getHandle();
+            CraftChunk newCraftChunk = new CraftChunk(serverLevel, chunkX, chunkZ);
 
-            PalettedContainer<BlockState> dataDataPaletteBlock = (PalettedContainer<BlockState>) blockIDField.get(craftChunk);
+            serverLevel.getChunkSource().getChunk(chunkX, chunkZ, ChunkStatus.FULL, true);
+            PalettedContainer<BlockState> dataDataPaletteBlock = (PalettedContainer<BlockState>) blockIDField.get(newCraftChunk);
 
             dataDataPaletteBlock.release();
             dataDataPaletteBlock.acquire();
-            ChunkSnapshot chunkSnapshot = craftChunk.getChunkSnapshot();
+            ChunkSnapshot chunkSnapshot = newCraftChunk.getChunkSnapshot();
             dataDataPaletteBlock.release();
 
             return chunkSnapshot;
+
         } catch (IllegalAccessException e) {
             e.printStackTrace();
             Pathetic.getPluginLogger().warning("Error fetching Chunk Snapshot: " + e.getMessage());
