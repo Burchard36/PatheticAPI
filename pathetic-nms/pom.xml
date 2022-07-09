@@ -47,6 +47,20 @@
             <version>1.0.2</version>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>xyz.ollieee</groupId>
+            <artifactId>v1_16</artifactId>
+            <version>1.0.2</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>xyz.ollieee</groupId>
+            <artifactId>v1_15</artifactId>
+            <version>1.0.2</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 </project>

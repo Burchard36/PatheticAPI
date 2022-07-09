@@ -65,7 +65,7 @@ public class SnapshotManagerImpl implements SnapshotManager {
             return new PathBlock(location, pathBlockType);
 
         } catch (Exception e) {
-
+            e.printStackTrace();
             Pathetic.getPluginLogger().warning("Error fetching Block: " + e.getMessage());
             return new PathBlock(location, PathBlockType.SOLID);
         }

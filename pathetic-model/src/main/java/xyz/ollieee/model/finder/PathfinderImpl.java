@@ -55,8 +55,6 @@ public class PathfinderImpl implements Pathfinder {
 
             Node currentNode = nodeQueue.poll();
 
-            Bukkit.getPlayer("olijeffers0n").sendBlockChange(BukkitConverter.toLocation(currentNode.getLocation()), Material.AMETHYST_BLOCK.createBlockData());
-
             if (currentNode.hasReachedEnd())
                 return new PathfinderResultImpl(PathfinderSuccess.FOUND, retracePath(currentNode));
 
