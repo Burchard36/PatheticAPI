@@ -85,14 +85,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.19-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-            <classifier>remapped-mojang</classifier>
-        </dependency>
-
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.24</version>
@@ -116,6 +108,13 @@
         <dependency>
             <groupId>xyz.ollieee</groupId>
             <artifactId>pathetic-legacy</artifactId>
+            <version>1.0.2</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>xyz.ollieee</groupId>
+            <artifactId>pathetic-nms</artifactId>
             <version>1.0.2</version>
             <scope>compile</scope>
         </dependency>

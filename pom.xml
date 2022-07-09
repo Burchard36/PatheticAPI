@@ -20,6 +20,8 @@
         <module>pathetic-api</module>
         <module>pathetic-utils</module>
         <module>pathetic-model</module>
+        <module>pathetic-nms</module>
+        <module>pathetic-nms/v1_19</module>
     </modules>
 
 </project>
